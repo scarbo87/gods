@@ -387,6 +387,28 @@ func (t *Tree) bottom(d int) *Node {
 	return n
 }
 
+func (t *Tree) GetNearestNode(key interface{}) *Node {
+    n := t.Root
+    for n != nil {
+        cmp := t.Comparator(key, n.Key)
+        switch {
+        case cmp == 0:
+            return n
+        case cmp < 0:
+            if n.Children[0] == nil {
+                return n
+            }
+            n = n.Children[0]
+        case cmp > 0:
+            if n.Children[1] == nil {
+                return n
+            }
+            n = n.Children[1]
+        }
+    }
+    return nil
+}
+
 // Prev returns the previous element in an inorder
 // walk of the AVL tree.
 func (n *Node) Prev() *Node {
